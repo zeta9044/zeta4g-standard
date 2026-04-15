@@ -173,6 +173,22 @@ Zeta4G는 용도에 따라 여러 에디션을 제공합니다:
 | **AI** | + 분산 GraphRAG, 분산 벡터 |
 | **Ultimate** | + Pregel/BSP 분산 컴퓨팅 |
 
+## Support & Contact
+
+기술 지원 및 문의는 아래 채널을 이용해 주세요.
+
+| | |
+|---|---|
+| **Telegram** | [@pub_zeta](https://t.me/pub_zeta) |
+| **Email** | [zeta4lab@gmail.com](mailto:zeta4lab@gmail.com) |
+| **Website** | [https://zeta4.net](https://zeta4.net) |
+
 ## License
 
 Proprietary. All rights reserved.
+
+---
+
+**제타포랩 (Zeta4Lab)** | 대표: 최강유 | 사업자등록번호: 570-35-01460
+
+[zeta4.net](https://zeta4.net) | [zeta4lab@gmail.com](mailto:zeta4lab@gmail.com) | Telegram [@pub_zeta](https://t.me/pub_zeta)
