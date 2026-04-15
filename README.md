@@ -173,6 +173,12 @@ Zeta4G는 용도에 따라 여러 에디션을 제공합니다:
 | **AI** | + 분산 GraphRAG, 분산 벡터 |
 | **Ultimate** | + Pregel/BSP 분산 컴퓨팅 |
 
+## Sponsor
+
+Zeta4G 프로젝트가 도움이 되셨다면 후원을 통해 지속적인 개발을 응원해 주세요.
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-Zeta4G-ea4aaa?logo=github-sponsors&logoColor=white)](https://github.com/sponsors/zeta9044)
+
 ## Support & Contact
 
 기술 지원 및 문의는 아래 채널을 이용해 주세요.
