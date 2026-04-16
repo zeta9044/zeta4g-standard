@@ -132,7 +132,7 @@ jobs:
             ### Docker
 
             ```bash
-            docker pull zeta9044/zeta4g-standard:${{ inputs.version }}
+            docker pull zeta4lab/zeta4g-standard:${{ inputs.version }}
             # or
             docker pull ghcr.io/zeta9044/zeta4g-standard:${{ inputs.version }}
             ```
@@ -204,8 +204,8 @@ jobs:
           context: .
           push: true
           tags: |
-            zeta9044/zeta4g-standard:${{ inputs.version }}
-            zeta9044/zeta4g-standard:latest
+            zeta4lab/zeta4g-standard:${{ inputs.version }}
+            zeta4lab/zeta4g-standard:latest
             ghcr.io/zeta9044/zeta4g-standard:${{ inputs.version }}
             ghcr.io/zeta9044/zeta4g-standard:latest
           labels: |
