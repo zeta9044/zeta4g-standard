@@ -1,23 +1,23 @@
 #!/bin/sh
 set -e
 
-DATA_DIR="${ZETA4G_HOME:-/data}"
+export ZETA4G_HOME="${ZETA4G_HOME:-/data}"
 
 # Initialize database on first run
-if [ ! -d "${DATA_DIR}/.zeta4g" ]; then
-  echo "==> Initializing Zeta4G database at ${DATA_DIR}..."
-  zeta4gctl init --home "${DATA_DIR}" -y
+if [ ! -d "${ZETA4G_HOME}/.zeta4g" ]; then
+  echo "==> Initializing Zeta4G database at ${ZETA4G_HOME}..."
+  zeta4gctl --home "${ZETA4G_HOME}" init -y
 fi
 
 case "$1" in
   start)
     shift
-    echo "==> Starting Zeta4G server..."
-    exec zeta4gd --home "${DATA_DIR}" "$@"
+    echo "==> Starting Zeta4G server (foreground)..."
+    exec zeta4gctl --home "${ZETA4G_HOME}" console --host 0.0.0.0 "$@"
     ;;
   init)
     shift
-    exec zeta4gctl init --home "${DATA_DIR}" "$@"
+    exec zeta4gctl --home "${ZETA4G_HOME}" init "$@"
     ;;
   shell)
     shift

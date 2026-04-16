@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.title="Zeta4G Standard Edition"
 LABEL org.opencontainers.image.description="High-performance graph database server with Cypher query support"
@@ -9,7 +9,7 @@ LABEL org.opencontainers.image.source="https://github.com/zeta9044/zeta4g-standa
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       ca-certificates \
-      libssl3 \
+      libssl3t64 \
       curl \
       tini \
     && rm -rf /var/lib/apt/lists/*
