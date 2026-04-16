@@ -1,0 +1,36 @@
+FROM debian:bookworm-slim
+
+LABEL org.opencontainers.image.title="Zeta4G Standard Edition"
+LABEL org.opencontainers.image.description="High-performance graph database server with Cypher query support"
+LABEL org.opencontainers.image.vendor="Zeta4Lab"
+LABEL org.opencontainers.image.url="https://zeta4.net"
+LABEL org.opencontainers.image.source="https://github.com/zeta9044/zeta4g-standard"
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      ca-certificates \
+      libssl3 \
+      curl \
+      tini \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r zeta4g && \
+    useradd -r -g zeta4g -m -d /home/zeta4g -s /bin/bash zeta4g && \
+    mkdir -p /data && chown zeta4g:zeta4g /data
+
+COPY binaries/zeta4gd binaries/zeta4gs binaries/zeta4g-admin binaries/zeta4gctl binaries/zeta4g-onto /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/zeta4g*
+
+VOLUME /data
+
+EXPOSE 9043 9044 9045
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -sf http://localhost:9044/api/status || exit 1
+
+USER zeta4g
+WORKDIR /data
+
+ENTRYPOINT ["tini", "--", "docker-entrypoint.sh"]
+CMD ["start"]

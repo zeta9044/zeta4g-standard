@@ -13,6 +13,35 @@ Standard Edition은 HTTP/Bolt 프로토콜 서버, 온톨로지 관리, 스키�
 | macOS | Apple Silicon (M1/M2/M3/M4) | `zeta4g-standard-<version>-darwin-aarch64.tar.gz` |
 | Linux | x86_64 (AMD/Intel) | `zeta4g-standard-<version>-linux-x86_64.tar.gz` |
 
+## Docker
+
+### Docker Hub
+
+```bash
+docker run -d --name zeta4g \
+  -p 9044:9044 -p 9045:9045 \
+  -v zeta4g-data:/data \
+  zeta9044/zeta4g-standard:latest start --no-auth
+```
+
+### GitHub Container Registry
+
+```bash
+docker run -d --name zeta4g \
+  -p 9044:9044 -p 9045:9045 \
+  -v zeta4g-data:/data \
+  ghcr.io/zeta9044/zeta4g-standard:latest start --no-auth
+```
+
+### Docker Compose
+
+```bash
+curl -LO https://raw.githubusercontent.com/zeta9044/zeta4g-standard/main/docker-compose.yml
+docker compose up -d
+```
+
+운영 환경에서는 `docker-compose.yml`의 `--no-auth`를 제거하세요.
+
 ## Quick Start
 
 ### 1. 다운로드 및 압축 해제

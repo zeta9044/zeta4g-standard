@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 env:
   CARGO_TERM_COLOR: always
@@ -128,6 +129,14 @@ jobs:
             | macOS | Apple Silicon (aarch64) | `zeta4g-standard-${{ inputs.version }}-darwin-aarch64.tar.gz` |
             | Linux | x86_64 | `zeta4g-standard-${{ inputs.version }}-linux-x86_64.tar.gz` |
 
+            ### Docker
+
+            ```bash
+            docker pull zeta9044/zeta4g-standard:${{ inputs.version }}
+            # or
+            docker pull ghcr.io/zeta9044/zeta4g-standard:${{ inputs.version }}
+            ```
+
             ### Verify checksum
             ```bash
             shasum -a 256 -c zeta4g-standard-*.sha256
@@ -150,3 +159,55 @@ jobs:
             artifacts/**/*.sha256
           draft: false
           prerelease: false
+
+  docker:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout release repo
+        uses: actions/checkout@v4
+
+      - name: Download Linux x86_64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: zeta4g-standard-${{ inputs.version }}-linux-x86_64
+          path: artifacts/
+
+      - name: Prepare binaries for Docker build
+        run: |
+          mkdir -p binaries
+          cd artifacts
+          tar xzf *.tar.gz
+          cp zeta4g-standard-*/zeta4g* ../binaries/
+          chmod +x ../binaries/*
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            zeta9044/zeta4g-standard:${{ inputs.version }}
+            zeta9044/zeta4g-standard:latest
+            ghcr.io/zeta9044/zeta4g-standard:${{ inputs.version }}
+            ghcr.io/zeta9044/zeta4g-standard:latest
+          labels: |
+            org.opencontainers.image.version=${{ inputs.version }}
+            org.opencontainers.image.revision=${{ github.sha }}
