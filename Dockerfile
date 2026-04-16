@@ -27,7 +27,7 @@ VOLUME /data
 EXPOSE 9043 9044 9045
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -sf http://localhost:9044/api/status || exit 1
+  CMD curl -sf http://localhost:9044/ || exit 1
 
 USER zeta4g
 WORKDIR /data
