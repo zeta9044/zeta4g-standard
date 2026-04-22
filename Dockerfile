@@ -18,7 +18,8 @@ RUN groupadd -r zeta4g && \
     useradd -r -g zeta4g -m -d /home/zeta4g -s /bin/bash zeta4g && \
     mkdir -p /data && chown zeta4g:zeta4g /data
 
-COPY binaries/zeta4gd binaries/zeta4gs binaries/zeta4g-admin binaries/zeta4gctl binaries/zeta4g-onto /usr/local/bin/
+ARG BINARIES_DIR=binaries
+COPY ${BINARIES_DIR}/zeta4gd ${BINARIES_DIR}/zeta4gs ${BINARIES_DIR}/zeta4g-admin ${BINARIES_DIR}/zeta4gctl ${BINARIES_DIR}/zeta4g-onto /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/zeta4g*
 
