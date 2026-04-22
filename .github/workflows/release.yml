@@ -69,21 +69,21 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            target/standard
+            target/base
           key: ${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ matrix.target }}-cargo-
 
-      - name: Build Standard Edition
+      - name: Build Base Edition
         run: |
-          cargo build -p zeta4g-standard --release --target-dir target/standard
+          cargo build -p zeta4g-base --release --target-dir target/base
 
       - name: Package binaries
         run: |
-          ARTIFACT="zeta4g-standard-${VERSION}-${PLATFORM}"
+          ARTIFACT="zeta4g-base-${VERSION}-${PLATFORM}"
           mkdir -p "dist/${ARTIFACT}"
           for bin in zeta4gd zeta4gs zeta4g-admin zeta4gctl zeta4g-onto; do
-            cp "target/standard/release/${bin}" "dist/${ARTIFACT}/"
+            cp "target/base/release/${bin}" "dist/${ARTIFACT}/"
           done
           cd dist
           tar czf "${ARTIFACT}.tar.gz" "${ARTIFACT}/"
@@ -92,7 +92,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zeta4g-standard-${{ env.VERSION }}-${{ env.PLATFORM }}
+          name: zeta4g-base-${{ env.VERSION }}-${{ env.PLATFORM }}
           path: |
             dist/*.tar.gz
             dist/*.sha256
@@ -118,42 +118,42 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ inputs.version }}
-          name: Zeta4G Standard v${{ inputs.version }}
+          name: Zeta4G Base v${{ inputs.version }}
           body: |
-            ## Zeta4G Standard Edition v${{ inputs.version }}
+            ## Zeta4G Base Edition v${{ inputs.version }}
 
             ### Downloads
 
             | Platform | Architecture | File |
             |----------|-------------|------|
-            | macOS | Apple Silicon (aarch64) | `zeta4g-standard-${{ inputs.version }}-darwin-aarch64.tar.gz` |
-            | Linux | x86_64 | `zeta4g-standard-${{ inputs.version }}-linux-x86_64.tar.gz` |
+            | macOS | Apple Silicon (aarch64) | `zeta4g-base-${{ inputs.version }}-darwin-aarch64.tar.gz` |
+            | Linux | x86_64 | `zeta4g-base-${{ inputs.version }}-linux-x86_64.tar.gz` |
 
             ### Docker
 
             ```bash
-            docker pull zeta4lab/zeta4g-standard:${{ inputs.version }}
+            docker pull zeta4lab/zeta4g-base:${{ inputs.version }}
             # or
-            docker pull ghcr.io/zeta9044/zeta4g-standard:${{ inputs.version }}
+            docker pull ghcr.io/zeta9044/zeta4g-base:${{ inputs.version }}
             ```
 
             ### Verify checksum
             ```bash
-            shasum -a 256 -c zeta4g-standard-*.sha256
+            shasum -a 256 -c zeta4g-base-*.sha256
             ```
 
             ### Quick Start
 
             ```bash
-            tar xzf zeta4g-standard-<version>-<platform>.tar.gz
-            cd zeta4g-standard-<version>-<platform>
+            tar xzf zeta4g-base-<version>-<platform>.tar.gz
+            cd zeta4g-base-<version>-<platform>
 
             ./zeta4gctl init --clean -y
             ./zeta4gctl start --no-auth
             ./zeta4gs "RETURN 'Hello, Zeta4G!' AS message"
             ```
 
-            See [README](https://github.com/zeta9044/zeta4g-standard#readme) for full documentation.
+            See [README](https://github.com/zeta9044/zeta4g-base#readme) for full documentation.
           files: |
             artifacts/**/*.tar.gz
             artifacts/**/*.sha256
@@ -171,7 +171,7 @@ jobs:
       - name: Download Linux x86_64 artifact
         uses: actions/download-artifact@v4
         with:
-          name: zeta4g-standard-${{ inputs.version }}-linux-x86_64
+          name: zeta4g-base-${{ inputs.version }}-linux-x86_64
           path: artifacts/
 
       - name: Prepare binaries for Docker build
@@ -179,7 +179,7 @@ jobs:
           mkdir -p binaries
           cd artifacts
           tar xzf *.tar.gz
-          cp zeta4g-standard-*/zeta4g* ../binaries/
+          cp zeta4g-base-*/zeta4g* ../binaries/
           chmod +x ../binaries/*
 
       - name: Set up Docker Buildx
@@ -204,10 +204,10 @@ jobs:
           context: .
           push: true
           tags: |
-            zeta4lab/zeta4g-standard:${{ inputs.version }}
-            zeta4lab/zeta4g-standard:latest
-            ghcr.io/zeta9044/zeta4g-standard:${{ inputs.version }}
-            ghcr.io/zeta9044/zeta4g-standard:latest
+            zeta4lab/zeta4g-base:${{ inputs.version }}
+            zeta4lab/zeta4g-base:latest
+            ghcr.io/zeta9044/zeta4g-base:${{ inputs.version }}
+            ghcr.io/zeta9044/zeta4g-base:latest
           labels: |
             org.opencontainers.image.version=${{ inputs.version }}
             org.opencontainers.image.revision=${{ github.sha }}
