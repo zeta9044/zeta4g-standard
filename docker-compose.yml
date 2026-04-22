@@ -1,6 +1,6 @@
 services:
   zeta4g:
-    image: zeta4lab/zeta4g-standard:latest
+    image: zeta4lab/zeta4g-base:latest
     container_name: zeta4g
     command: ["start", "--no-auth"]
     ports:

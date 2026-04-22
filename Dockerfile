@@ -1,10 +1,10 @@
 FROM ubuntu:24.04
 
-LABEL org.opencontainers.image.title="Zeta4G Standard Edition"
+LABEL org.opencontainers.image.title="Zeta4G Base Edition"
 LABEL org.opencontainers.image.description="High-performance graph database server with Cypher query support"
 LABEL org.opencontainers.image.vendor="Zeta4Lab"
 LABEL org.opencontainers.image.url="https://zeta4.net"
-LABEL org.opencontainers.image.source="https://github.com/zeta9044/zeta4g-standard"
+LABEL org.opencontainers.image.source="https://github.com/zeta9044/zeta4g-base"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
